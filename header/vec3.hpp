@@ -1,4 +1,7 @@
-#include<math>
+#ifndef VEC3H
+#define VEC3H
+
+#include<cmath>
 #include<stdlib.h>
 #include<iostream>
 
@@ -6,7 +9,7 @@ class vec3{ //for storing geometric vectors and colors
   public:
     float e[3];
     vec3() {}
-    vec3(float e0,float e1, float e2){e[0]=e0;e[1]=e1;e[2]=e2}
+    vec3(float e0,float e1, float e2){e[0]=e0;e[1]=e1;e[2]=e2;}
     inline float x() const {
     return e[0];
     } //inline directly copies the function code 
@@ -26,7 +29,7 @@ class vec3{ //for storing geometric vectors and colors
     return e[2];
     }
 
-    inline const vec3& operator+() const {return *this} //returns a const reference to vec3 object. just returns the vector as is 
+    inline const vec3& operator+() const {return *this;} //returns a const reference to vec3 object. just returns the vector as is 
     inline const vec3 operator-() const{return vec3(-e[0],-e[1],-e[2]);} //returns a copy of the vector but with negative values,dos not change the original object
     inline float operator[](int i)const{return e[i];}
     inline float& operator[](int i){return e[i];} //to enable both reading and writing with the same [] operator 
@@ -34,7 +37,7 @@ class vec3{ //for storing geometric vectors and colors
     inline vec3& operator +=(const vec3 &v2);
     inline vec3& operator -=(const vec3 &v2);
     inline vec3& operator *=(const vec3 &v2); // will define th4se later
-    inline vec3& operator /=(const vec3 &v2;
+    inline vec3& operator /=(const vec3 &v2);
     inline vec3& operator *=(const float t);
     inline vec3& operator /=(const float t);
 
@@ -44,7 +47,6 @@ class vec3{ //for storing geometric vectors and colors
     return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];}
     
    inline void make_unit_vector();
-   float e[3];
 };
 
 inline std::istream& operator>>(std::istream& is,vec3 &t){ //directly reads a vector or vec3 object from an input stream like cin; example cin>>v
@@ -62,8 +64,8 @@ inline void vec3::make_unit_vector(){
 inline vec3 operator+(const vec3 &v1,const vec3 &v2){
   return vec3(v1.e[0] + v2.e[0],v1.e[1]+v2.e[1],v1[2]+v2.e[2]);
 }
-inline vec3 operator-(const vec3 &v1,const vec3 &vec2){
-  return vec3(v1.e[0]-v2.e[0],v1.e[1]-v2.e[1],v1.e[2]+v1.e[2]);
+inline vec3 operator-(const vec3 &v1,const vec3 &v2){
+  return vec3(v1.e[0]-v2.e[0],v1.e[1]-v2.e[1],v1.e[2]-v2.e[2]);
 }
 inline vec3 operator*(const vec3 &v1,const vec3 &v2){
   return vec3(v1.e[0]*v2.e[0],v1.e[1]*v2.e[1],v1.e[2]*v2.e[2]);
@@ -92,7 +94,7 @@ inline vec3& vec3::operator+=(const vec3 &v){
   e[0] += v.e[0];
   e[1] += v.e[1];
   e[2] += v.e[2];
-  return *this
+  return *this;
 }
 inline vec3& vec3::operator*=(const vec3 &v){
   e[0] *= v.e[0];
@@ -104,6 +106,7 @@ inline vec3& vec3::operator/=(const vec3& v){
   e[0] /= v.e[0];
   e[1] /= v.e[1];
   e[2] /= v.e[2];
+  return *this;
 }
 inline vec3& vec3::operator-=(const vec3& v){
  e[0] -= v.e[0];
@@ -127,7 +130,4 @@ return *this;
 inline vec3 unit_vector(vec3 v){ //not taking the reference here
   return v/v.length();
 }
-
-
-
-
+#endif 
