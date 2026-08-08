@@ -31,7 +31,25 @@ vec3 random_in_unit_sphere() {
     return p;
 }
 
-vec3 color(const ray& r){
+vec3 color(const ray& r,hitable *world){  // if ray hits the object, bounce it back to a random direction
+  hit_record rec;
+  if(world->hit(r,0.0,MAXFLOAT,rec)){
+// (not needed, we dont assume that every surface is lambertian anymore)    vec3 target = rec.p + rec.normal +random_in_unit_sphere();  // R=p+n+e, the random bounce's direction 
+
+  //  return 0.5*color(ray(rec.p,target-rec.p),world); // recurssion for the new bounced ray
+  ray scattered;
+  vec3 attenuation;
+  if(rec.mat_ptr->scatter(r, rec, attenuation, scattered)) // we askin the material if the ray is hit or not 
+            return attenuation * color(scattered, world); // like how many sphere hit in the world and the scattered rays
+        else
+            return vec3(0, 0, 0);       // ray dies so return black color 
+  }                                                                 
+  
+    vec3 unit_direction=unit_vector(r.direction());
+    float t=0.5*(unit_direction.y()+1.0);
+
+    return (1.0-t)*vec3(1.0,1.0,1.0) + t*vec3(0.5,0.7,1.0);
+  
   // we make the image/background like this- top-blue;middle - bluish white; bottom-white 
    float t =  hit_sphere(vec3(0,0,-1),0.5,r);// centre,radius and the ray ; t is the hitpoint 
    if(t > 0.0){
@@ -69,6 +87,7 @@ int main(){
        col += color(r,world);
      }    
      col /= float(ns);
+     col = vec3(sqrt(col[0],sqrt(col[1]), sqrt(col[2]))); 
      int ir = int(255.99*col[0]);
      int ig = int(255.99*col[1]);
      int ib = int(255.99*col[2]);
