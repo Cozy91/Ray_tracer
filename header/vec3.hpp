@@ -134,5 +134,16 @@ inline vec3 unit_vector(vec3 v){ //not taking the reference here
 vec3 reflect(const vec3& v,const vec3& n){
   return v-2*dot(v,n)*n;
 }
-
+bool refract(const vec3& v,const vec3& n,float ni_over_nt ,vec3& refracted){ // ni/nt = ratio of refractive indices
+  vec3 uv=unit_vector(v);
+  float dt=dot(uv,n);
+  float discriminant = 1.0 0 ni_over_nt*ni_over_nt*(1-dt*dt);    // just snell's law
+  if(discriminant > 0){
+    refracted = ni_over_nt*(uv-n*dt) - n*sqrt(discriminant);
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 #endif 
