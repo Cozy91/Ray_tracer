@@ -41,10 +41,10 @@ class dielectric:public material{
       float ni_over_nt;
       attenuation = vec3(1.0,1.0,0.0); //dielectric material dont absorb/change the color of the ray
       vec3 refracted; // refracted ray if it exist
-      flot reflect_prob;
+      float reflect_prob;
       float cosine;     // cosine of the angel between the ray and surface normal
       if(dot(r_in.direction(),rec.normal) > 0){   // ray is travelling in the general direction as the normal,ray is leaving the material
-        outward_normal = rec.normal;
+        outward_normal = -rec.normal;
         ni_over_nt=ref_idx;
         cosine = ref_idx*dot(r_in.direction(),rec.normal)/r_in.direction().length(); // between the ray and the normal, multiplying by ref_idx because ray is going from material to air
       }
@@ -56,6 +56,26 @@ class dielectric:public material{
     // the incoming ray points toward the surface.
         cosine=-dot(r_in.direction(),rec.normal)/r_in.direction().length();
       }
+      if(refract(r_in.direction(),outward_normal,ni_over_nt,refracted)){
+          reflect_prob = schlick(cosine,ref_idx);
+      }
+      else{
+        scattered=ray(rec.p,reflected);
+        reflect_prob=1;
+      }
+      if(drand48() < reflect_prob){
+        scattered=ray(rec.p,refracted);
+      }
+      else{
+        scattered = ray(rec.p,refracted);
+      }
+      return true;
     }
-}
+    float ref_idx;
+    float schlick(float cosine,float ref_idx){
+      float r0=(1-ref_idx)/(1+ref_idx);
+      r0=r0*r0;
+      return r0 + (1-r0)*pow((1-cosine),5);
+    }
+};
 
