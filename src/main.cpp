@@ -63,17 +63,52 @@ vec3 color(const ray& r,hitable *world){  // if ray hits the object, bounce it b
 }
 
 int main(){
+
+  vec3 lookfrom(3,3,2);
+  vec3 lookat(0,0,-1);
+  float dist_to_focus = (lookfrom - lookat).length();
+  float aperture=2.0;
+
+  camera cam(lookfrom,lookat,vec3(0,1,0),20,float(nx)/float(ny),aperture,dist_to_focus);
+
+
   int nx =200; //length of the screen
   int ny=100; // breadth of the screen
   int ns=100; // number of pixels
   std::cout<<"P3\n"<<nx<<" "<<ny<<"\n255\n";
-  hitable* list[2];
-  list[0]= new sphere(vec3(0,0,-1),0.5,new lambertian(vec3(0.1,0.2,0.5)));
-  list[1]= new sphere(vec3(0,-100.5,-1),100,new lambertian(vec3(0.8,0.8,0.0)));
-  list[2]= new sphere(vec3(1,0,-1),0.5,new metal(vec3(0.8,0.6,0.2)));
-  list[3]= new sphere(vec3(-1,0,-1),0.5,new dielectric(1.5)); // 4 demo spheres 
-  List[4]= new sphere(vec3(-1,0,-1),-0.45,new dielectric(1.5));
-  hitable* world=new hitable_list(list,2);
+  hitable* list[5];
+
+list[0] = new sphere(
+    vec3(0, 0, -1),
+    0.5,
+    new lambertian(vec3(0.1, 0.2, 0.5))
+);
+
+list[1] = new sphere(
+    vec3(0, -100.5, -1),
+    100,
+    new lambertian(vec3(0.8, 0.8, 0.0))
+);
+
+list[2] = new sphere(
+    vec3(1, 0, -1),
+    0.5,
+    new metal(vec3(0.8, 0.6, 0.2))
+);
+
+list[3] = new sphere(
+    vec3(-1, 0, -1),
+    0.5,
+    new dielectric(1.5)
+);
+
+list[4] = new sphere(
+    vec3(-1, 0, -1),
+    -0.45,
+    new dielectric(1.5)
+);
+
+hitable* world = new hitable_list(list, 5);
   camera cam;
   vec3 lower_left_corner(-2.0,-1.0,-1.0);
   vec3 horizontal(4.0,0.0,0.0);
