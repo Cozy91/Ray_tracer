@@ -5,6 +5,7 @@
 #include "../header/sphere.hpp"
 #include "../header/hitable.hpp"
 #include "../header/hitablelist.hpp"
+#include "../header/material.hpp"
 
 // so now we want to find if a ray falls on a sphere or not(we are creating a sphere).A point on a ray or a line falls on the sphere if its coordiates satisfy the equation of the sphere. The point being p(t) as we mentioned earlier, so after substituting those values we get a quadratic equation with only t being the variable. THe solition of a quadratic equation is simple
 

@@ -1,12 +1,17 @@
+#include "vec3"
+#includ  "ray.hpp"
+
 class material{
   public:
+    vec3 albedo;
+    float fuzz;
     virtual bool scatter(const ray& r_in,const hit_record& rec, vec3& attenuation, ray& scattered) const = 0;
 
-};         // attenuation writes the color after hit, scattered creates a new bounded ray after the incident one
+        // attenuation writes the color after hit, scattered creates a new bounded ray after the incident one
 
 class lambertian: public material{ // for diffuse surfaces,diffuse surface that reflects the light a which is called albedo of the materil
         public:
-          lambertian(const vec3& a):albedo(a);{}
+          lambertian(const vec3& a):albedo(a){}
           virtual bool scatter(const ray& r_in, const hit_record& rec,vec3& attenuation,ray& scattered) const {
             vec3 target=rec.p + rec.normal + random_in_unit_sphere();
             scattered = ray(rec.p,target-rec.p);
@@ -19,18 +24,19 @@ class lambertian: public material{ // for diffuse surfaces,diffuse surface that 
 class metal:public material{
   public:
     metal(const vec3& a,float f): albedo(a){ 
-      if(f>1){
-        fuzz = f;else fuzz=1;
+      if(f<1){
+      fuzz = f; 
+      } 
+      else {fuzz=1;}
       }
-    }
-    virtual bool scatter(const ray& r_in,const hit_record& rec,vec3& attenuation, ray& scattered) const {
-      vec3 reflected = reflect(unit_vector(r_in.direction())rec.normal); // PERFECT reflection calculating, dot product ans shit, defined in vec3.hpp
+  virtual bool scatter(const ray& r_in,const hit_record& rec,vec3& attenuation, ray& scattered) const {
+      vec3 reflected =reflect(unit_vector(r_in.direction()),rec.normal); // PERFECT reflection calculating, dot product ans shit, defined in vec3.hpp
       scattered = ray(rec.p,reflected);
       attenuation=albedo;
-      return(dot(scattered.direction(),rec.normal())>0); // error handling for rays going into  the surface
+      return dot(scattered.direction(),rec.normal())>0; // error handling for rays going into  the surface
     }
-    vec3 albedo;
-    float fuzz;
+  //  vec3 albedo;
+   // float fuzz;
 };
 class dielectric:public material{
   public:
@@ -72,10 +78,11 @@ class dielectric:public material{
       return true;
     }
     float ref_idx;
-    float schlick(float cosine,float ref_idx){
+    float schlick(float cosine,float ref_idx) const{
       float r0=(1-ref_idx)/(1+ref_idx);
       r0=r0*r0;
       return r0 + (1-r0)*pow((1-cosine),5);
     }
+};
 };
 

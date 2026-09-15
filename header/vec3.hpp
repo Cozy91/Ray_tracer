@@ -136,8 +136,8 @@ vec3 reflect(const vec3& v,const vec3& n){
 }
 bool refract(const vec3& v,const vec3& n,float ni_over_nt ,vec3& refracted){ // ni/nt = ratio of refractive indices
   vec3 uv=unit_vector(v);
-  float dt=dot(uv,n);
-  float discriminant = 1.0 0 ni_over_nt*ni_over_nt*(1-dt*dt);    // just snell's law
+  float dt=dot(uv,n); //how much the ray is pointing in the direction of surface normal
+  float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);    // just snell's law to find the angle (sin of angle) of the refracted ray
   if(discriminant > 0){
     refracted = ni_over_nt*(uv-n*dt) - n*sqrt(discriminant);
     return true;
