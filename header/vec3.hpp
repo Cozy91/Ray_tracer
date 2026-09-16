@@ -83,7 +83,7 @@ inline vec3 operator*(const vec3& v,float t){
   return vec3(t*v.e[0],t*v.e[1],t*v.e[2]);
 }
 inline float dot(const vec3 &v1,const vec3 &v2){
-  return v1.e[0]*v2.e[0] + v1.e[1]*v1.e[1] + v2.e[2]*v2.e[2];
+  return v1.e[0]*v2.e[0] + v1.e[1]*v2.e[1] + v1.e[2]*v2.e[2];
 }
 inline vec3 cross(const vec3& v1,const vec3& v2){
   return vec3( (v1.e[1]*v2.e[0] - v1.e[2]*v2.e[1]),
@@ -136,8 +136,8 @@ vec3 reflect(const vec3& v,const vec3& n){
 }
 bool refract(const vec3& v,const vec3& n,float ni_over_nt ,vec3& refracted){ // ni/nt = ratio of refractive indices
   vec3 uv=unit_vector(v);
-  float dt=dot(uv,n);
-  float discriminant = 1.0 0 ni_over_nt*ni_over_nt*(1-dt*dt);    // just snell's law
+  float dt=dot(uv,n); //how much the ray is pointing in the direction of surface normal
+  float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);    // just snell's law to find the angle (sin of angle) of the refracted ray
   if(discriminant > 0){
     refracted = ni_over_nt*(uv-n*dt) - n*sqrt(discriminant);
     return true;
@@ -145,5 +145,19 @@ bool refract(const vec3& v,const vec3& n,float ni_over_nt ,vec3& refracted){ // 
   else{
     return false;
   }
+}
+vec3 random_in_unit_sphere() {
+    while (true) {
+        vec3 p(
+            2.0 * rand() / RAND_MAX - 1.0,
+            2.0 * rand() / RAND_MAX - 1.0,
+            2.0 * rand() / RAND_MAX - 1.0
+        );
+
+        if (p.squared_length() >= 1.0)
+            continue;
+
+        return p;
+    }
 }
 #endif 
