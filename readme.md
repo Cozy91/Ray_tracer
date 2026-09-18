@@ -149,4 +149,138 @@ Multiple rays are sampled for each pixel instead of using a single ray.
         ┌─────────────┐
         │ •  •     •  │
         │    •  •     │
+        │ •       •   │
+        └─────────────┘
 ```
+
+The resulting colors are averaged to produce smoother edges and reduce aliasing.
+
+## Depth of Field
+
+The camera supports depth of field by simulating a finite aperture.
+
+Instead of every ray originating from exactly the same point, rays are randomly sampled across the camera's lens.
+
+This produces:
+
+* A focused region
+* Blurred foreground/background
+* A camera-like photographic effect
+
+## Image Output
+
+The renderer outputs images using the **PPM (Portable Pixmap)** format.
+
+PPM was used because of its simplicity. Pixels can be written directly to a text file without requiring an external image library.
+
+Example:
+
+```text
+P3
+800 450
+255
+...
+```
+
+The generated PPM image can then be converted to PNG or another image format for easier viewing and sharing.
+
+## Building
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Cozy91/Ray_tracer.git
+cd Ray_tracer
+```
+
+Compile the project:
+
+```bash
+g++ -std=c++17 src/*.cpp -Iheader -o raytracer
+```
+
+Run the renderer:
+
+```bash
+./raytracer
+```
+
+If the renderer writes the image to standard output, redirect it to a PPM file:
+
+```bash
+./raytracer > image.ppm
+```
+
+## Converting PPM to PNG
+
+Using ImageMagick:
+
+```bash
+magick image.ppm final_render.png
+```
+
+Or:
+
+```bash
+magick image.ppm assets/final_render.png
+```
+
+## Concepts
+
+This project covers several fundamental computer graphics concepts:
+
+* Vectors
+* Vector arithmetic
+* Dot products
+* Cross products
+* Rays
+* Ray-object intersection
+* Surface normals
+* Reflection
+* Refraction
+* Random sampling
+* Anti-aliasing
+* Materials
+* Recursive ray tracing
+* Camera geometry
+* Depth of field
+* Image generation
+
+## What I Learned
+
+Building the renderer from scratch helped me understand how a basic rendering pipeline works at a lower level rather than relying on an existing graphics engine.
+
+In particular, the project provided practical experience with:
+
+* C++ class design
+* Header/source organization
+* Mathematical abstractions
+* Recursion
+* Memory management
+* Random number generation
+* Debugging complex mathematical code
+* Rendering algorithms
+* Image formats
+
+## Future Improvements
+
+* [ ] Triangle support
+* [ ] OBJ model loading
+* [ ] Textures
+* [ ] Emissive materials
+* [ ] Area lights
+* [ ] Bounding Volume Hierarchy (BVH)
+* [ ] Multithreaded rendering
+* [ ] PNG/JPEG output
+* [ ] More advanced camera controls
+* [ ] GPU acceleration
+
+## References
+
+This project was inspired by **Ray Tracing in One Weekend** by Peter Shirley.
+
+The book provides a practical introduction to building a ray tracer from scratch and was used as a reference for many of the rendering concepts implemented in this project.
+
+## License
+
+This project is intended primarily for **educational and experimental purposes**.
