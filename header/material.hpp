@@ -1,3 +1,5 @@
+#ifndef MATERIAL_HPP
+#define MATERIAL_HPP
 #include "vec3.hpp"
 #include "ray.hpp"
 
@@ -86,4 +88,5 @@ class dielectric:public material{
       return r0 + (1-r0)*pow((1-cosine),5);
     }
 };
+#endif 
 

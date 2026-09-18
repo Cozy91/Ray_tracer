@@ -6,7 +6,7 @@
 #include "../header/hitable.hpp"
 #include "../header/hitablelist.hpp"
 #include "../header/material.hpp"
-
+#include "../header/random_scene.hpp"
 // so now we want to find if a ray falls on a sphere or not(we are creating a sphere).A point on a ray or a line falls on the sphere if its coordiates satisfy the equation of the sphere. The point being p(t) as we mentioned earlier, so after substituting those values we get a quadratic equation with only t being the variable. THe solition of a quadratic equation is simple
 
 bool hit_sphere(const vec3& center,float radius,const ray& r){
@@ -62,44 +62,12 @@ int main(){
   vec3 lookat(0,0,-1);
   float dist_to_focus = (lookfrom - lookat).length();
   float aperture=0.0;
-  int nx =1200; //length of the screen
-  int ny=600; // breadth of the screen
+  int nx =800; //length of the screen
+  int ny=400; // breadth of the screen
   int ns=100; // number of pixels          
   camera cam(lookfrom,lookat,vec3(0,1,0),20,float(nx)/float(ny),aperture,dist_to_focus);
   std::cout<<"P3\n"<<nx<<" "<<ny<<"\n255\n";
-  hitable* list[5];
-
-  list[0] = new sphere(
-    vec3(0, 0, -1),
-    0.5,
-    new lambertian(vec3(0.1, 0.2, 0.5))
-);
-
-list[1] = new sphere(
-    vec3(0, -100.5, -1),
-    100,
-    new lambertian(vec3(0.8, 0.8, 0.0))
-);
-
-list[2] = new sphere(
-    vec3(1, 0, -1),
-    0.5,
-    new metal(vec3(0.8, 0.6, 0.2))
-);
-
-list[3] = new sphere(
-    vec3(-1, 0, -1),
-    0.5,
-    new dielectric(1.5)
-);
-
-list[4] = new sphere(
-    vec3(-1, 0, -1),
-    -0.45,
-    new dielectric(1.5)
-);
-
-hitable* world = new hitable_list(list, 5);
+  hitable* world = random_scene();
   vec3 lower_left_corner(-2.0,-1.0,-1.0);
   vec3 horizontal(4.0,0.0,0.0);
   vec3 vertical(0.0,2.0,0.0);
