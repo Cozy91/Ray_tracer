@@ -225,43 +225,6 @@ Or:
 magick image.ppm assets/final_render.png
 ```
 
-## Concepts
-
-This project covers several fundamental computer graphics concepts:
-
-* Vectors
-* Vector arithmetic
-* Dot products
-* Cross products
-* Rays
-* Ray-object intersection
-* Surface normals
-* Reflection
-* Refraction
-* Random sampling
-* Anti-aliasing
-* Materials
-* Recursive ray tracing
-* Camera geometry
-* Depth of field
-* Image generation
-
-## What I Learned
-
-Building the renderer from scratch helped me understand how a basic rendering pipeline works at a lower level rather than relying on an existing graphics engine.
-
-In particular, the project provided practical experience with:
-
-* C++ class design
-* Header/source organization
-* Mathematical abstractions
-* Recursion
-* Memory management
-* Random number generation
-* Debugging complex mathematical code
-* Rendering algorithms
-* Image formats
-
 ## Future Improvements
 
 * [ ] Triangle support
